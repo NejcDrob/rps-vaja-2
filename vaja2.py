@@ -57,14 +57,15 @@ def my_sobel(slika):
     return slika_robov 
 
 def canny(slika, sp_prag, zg_prag):
-    #vaša implementacija
-    slika_robov=0
+    slika_robov=cv2.Canny(slika,sp_prag,zg_prag)
     return slika_robov 
 
 
 img = cv2.imread("lenna.png",0)
-cv2.imshow("roberts algoritem",my_roberts(img))
-cv2.imshow("prewwit algoritem",my_prewitt(img))
-cv2.imshow("sobel algoritem",my_sobel(img))
+#cv2.imshow("roberts algoritem",my_roberts(img))
+#cv2.imshow("prewwit algoritem",my_prewitt(img))
+#cv2.imshow("sobel algoritem",my_sobel(img))
+cv2.imshow("canny algoritem (10,300)",canny(img,10,300))
+cv2.imshow("canny algoritem (50,150)",canny(img,50,150))
 cv2.waitKey()
 cv2.destroyAllWindows()
