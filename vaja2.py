@@ -43,8 +43,17 @@ def my_prewitt(slika):
     return slika_robov 
 
 def my_sobel(slika):
-    #vaša implementacija
-    slika_robov=0
+    img = cv2.imread("lenna.png",0) 
+
+    gamma = 0
+    sy = cv2.Sobel(slika,-1,0,1,3)
+    sx = cv2.Sobel(slika,-1,1,0,3)
+
+    sx = np.uint8(np.absolute(sx))
+    sy = np.uint8(np.absolute(sy))
+
+    slika_robov = cv2.addWeighted(sx,0.5, sy,0.5,gamma)
+    compare = cv2.hconcat((sx,sy))
     return slika_robov 
 
 def canny(slika, sp_prag, zg_prag):
@@ -56,5 +65,6 @@ def canny(slika, sp_prag, zg_prag):
 img = cv2.imread("lenna.png",0)
 cv2.imshow("roberts algoritem",my_roberts(img))
 cv2.imshow("prewwit algoritem",my_prewitt(img))
+cv2.imshow("sobel algoritem",my_sobel(img))
 cv2.waitKey()
 cv2.destroyAllWindows()
