@@ -27,8 +27,19 @@ def my_roberts(slika):
     return slika_robov 
 
 def my_prewitt(slika):
-    #vaša implementacija
-    slika_robov=0
+    r1 = np.array([[1,0, -1],[1, 0,-1], [1,0,-1]])
+
+
+    r2 = np.array([[1,1,1],[0,0,0], [-1,-1,-1]])
+    p1o = cv2.filter2D(slika,-1,r1)
+    p2o = cv2.filter2D(slika,-1,r2)
+
+    prewitt_odvoda = cv2.hconcat((p1o,p2o))
+    gamma = 1
+
+    slika_robov = cv2.addWeighted(np.absolute(p1o),0.5, np.absolute(p2o),0.5,gamma)
+#cv2.imshow("Prewitt Odvoda", prewitt_odvoda)
+#cv2.imshow("Prewitt Gradienti", (prewitt_amplituda))
     return slika_robov 
 
 def my_sobel(slika):
@@ -44,5 +55,6 @@ def canny(slika, sp_prag, zg_prag):
 
 img = cv2.imread("lenna.png",0)
 cv2.imshow("roberts algoritem",my_roberts(img))
+cv2.imshow("prewwit algoritem",my_prewitt(img))
 cv2.waitKey()
 cv2.destroyAllWindows()
