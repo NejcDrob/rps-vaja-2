@@ -59,7 +59,11 @@ def canny(slika, sp_prag, zg_prag):
     slika_robov=cv2.Canny(slika,sp_prag,zg_prag)
     return slika_robov 
 
-
+def spremeni_kontrast(slika,alfa,beta):
+    for i in range(0,slika.shape[0]-2):
+       for j in range(0,slika.shape[1]-2):
+          slika[i][j]=alfa*slika[i][j]+beta
+    return slika
    
 
 img = cv2.imread("lenna.png",0)
