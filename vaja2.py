@@ -40,7 +40,20 @@ def my_prewitt(slika):
     return slika_robov 
 
 def my_sobel(slika):
-   pass
+    img = cv2.imread("lenna.png",0) 
+    r1 = np.array([[-1,0, 1],[-2, 0,2], [-1,0,1]])
+    r2 = np.array([[1,2,1],[0,0,0], [-1,-2,-1]])
+    r1p=np.zeros(slika.shape[:2])
+    r2p=np.zeros(slika.shape[:2])
+    slika_robov=np.zeros(slika.shape,dtype=np.uint8)
+    for i in range(0,slika.shape[0]-2):
+      for j in range(0,slika.shape[1]-2):
+         slika_del=slika[i:i+3,j:j+3]
+         r1p[i][j]=np.sum(slika_del*r1)
+         r2p[i][j]=np.sum(slika_del*r2)
+    slika_robov=np.sqrt(np.square(r1p)+np.square(r2p))
+    slika_robov=np.uint8(slika_robov)
+    return slika_robov 
 
 def canny(slika, sp_prag, zg_prag):
     slika_robov=cv2.Canny(slika,sp_prag,zg_prag)
