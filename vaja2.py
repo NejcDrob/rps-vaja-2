@@ -67,10 +67,11 @@ def spremeni_kontrast(slika,alfa,beta):
    
 
 img = cv2.imread("lenna.png",0)
-#cv2.imshow("roberts algoritem",my_roberts(img))
-#cv2.imshow("prewwit algoritem",my_prewitt(img))
+cv2.imshow("roberts algoritem",my_roberts(img))
+cv2.imshow("prewwit algoritem",my_prewitt(img))
 cv2.imshow("sobel algoritem",my_sobel(img))
-#cv2.imshow("canny algoritem (10,300)",canny(img,10,300))
-#cv2.imshow("canny algoritem (50,150)",canny(img,50,150))
+cv2.imshow("canny algoritem (10,300)",canny(img,10,300))
+cv2.imshow("canny algoritem (50,150)",canny(img,50,150))
+cv2.imshow("prewwit algoritem z kontrastom",my_prewitt(spremeni_kontrast(img,5,10)))
 cv2.waitKey()
 cv2.destroyAllWindows()
