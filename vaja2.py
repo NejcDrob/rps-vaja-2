@@ -9,75 +9,50 @@ import tkinter as tk
 
 def my_roberts(slika):
     #vaša implementacija
-    dimension= slika.shape
-    r1o=slika.copy()
-    r2o=slika.copy()
-    print("slika 6 6: ",slika[6,6],"slika 7 7: ",slika[6,6])
     r1 = np.array([[1,0],[0,-1]])
     r2 = np.array([[0,1],[-1,0]])
-    rto = cv2.filter2D(slika,-1,r2)
-    for i in range(0,dimension[0]-1):
-       for j in range(0,dimension[1]-1):
-         pixel1=slika[j][i]-slika[j+1][i+1]
-         pixel2=slika[j][i+1]-slika[j+1][i]
-         if(slika[j][i]<=slika[j+1][i+1]):
-             pixel1=0
-         if(slika[j][i+1]<=slika[j+1][i]):
-             pixel2=0
-         r1o[j][i]=pixel1
-         r2o[j][i]=pixel2
-
-         
-    print("shit 6 6: ",r1o[6,6])
-    print("rto 0 0: ",rto[6,6])
-    r2o = cv2.filter2D(slika,-1,r2)
-    roberts_odvoda = cv2.hconcat((r1o,r2o))
-
-#roberts_amplituda = np.sqrt(r1o**2 + r2o**2)
-    gamma = 0
-
-    slika_robov = cv2.addWeighted(np.absolute(r1o),0.5, np.absolute(r2o),0.5,gamma)
-    #cv2.imshow("Roberts Odvoda", roberts_odvoda)
-   # cv2.imshow("Roberts Gradienti", (roberts_amplituda))
+    r1o=np.zeros(slika.shape[:2])
+    r2o=np.zeros(slika.shape[:2])
+    slika_robov=np.zeros(slika.shape,dtype=np.uint8)
+    for i in range(0,slika.shape[0]-1):
+      for j in range(0,slika.shape[1]-1):
+         slika_del=slika[i:i+2,j:j+2]
+         r1o[i][j]=np.sum(slika_del*r1)
+         r2o[i][j]=np.sum(slika_del*r2)
+    slika_robov=np.sqrt(np.square(r1o)+np.square(r2o))
+    slika_robov=np.uint8(slika_robov)
     return slika_robov 
 
 def my_prewitt(slika):
+    dimension= slika.shape
     r1 = np.array([[1,0, -1],[1, 0,-1], [1,0,-1]])
     r2 = np.array([[1,1,1],[0,0,0], [-1,-1,-1]])
-    p1o = cv2.filter2D(slika,-1,r1)
-    p2o = cv2.filter2D(slika,-1,r2)
-
-    prewitt_odvoda = cv2.hconcat((p1o,p2o))
-    gamma = 1
-
-    slika_robov = cv2.addWeighted(np.absolute(p1o),0.5, np.absolute(p2o),0.5,gamma)
-#cv2.imshow("Prewitt Odvoda", prewitt_odvoda)
-#cv2.imshow("Prewitt Gradienti", (prewitt_amplituda))
+    r1p=np.zeros(slika.shape[:2])
+    r2p=np.zeros(slika.shape[:2])
+    slika_robov=np.zeros(slika.shape,dtype=np.uint8)
+    for i in range(0,slika.shape[0]-2):
+      for j in range(0,slika.shape[1]-2):
+         slika_del=slika[i:i+3,j:j+3]
+         r1p[i][j]=np.sum(slika_del*r1)
+         r2p[i][j]=np.sum(slika_del*r2)
+    slika_robov=np.sqrt(np.square(r1p)+np.square(r2p))
+    slika_robov=np.uint8(slika_robov)
     return slika_robov 
 
 def my_sobel(slika):
-    img = cv2.imread("lenna.png",0) 
-
-    gamma = 0
-    sy = cv2.Sobel(slika,-1,0,1,3)
-    sx = cv2.Sobel(slika,-1,1,0,3)
-
-    sx = np.uint8(np.absolute(sx))
-    sy = np.uint8(np.absolute(sy))
-
-    slika_robov = cv2.addWeighted(sx,0.5, sy,0.5,gamma)
-    compare = cv2.hconcat((sx,sy))
-    return slika_robov 
+   pass
 
 def canny(slika, sp_prag, zg_prag):
     slika_robov=cv2.Canny(slika,sp_prag,zg_prag)
     return slika_robov 
 
 
+   
+
 img = cv2.imread("lenna.png",0)
-cv2.imshow("roberts algoritem",my_roberts(img))
+#cv2.imshow("roberts algoritem",my_roberts(img))
 #cv2.imshow("prewwit algoritem",my_prewitt(img))
-#cv2.imshow("sobel algoritem",my_sobel(img))
+cv2.imshow("sobel algoritem",my_sobel(img))
 #cv2.imshow("canny algoritem (10,300)",canny(img,10,300))
 #cv2.imshow("canny algoritem (50,150)",canny(img,50,150))
 cv2.waitKey()
