@@ -9,13 +9,28 @@ import tkinter as tk
 
 def my_roberts(slika):
     #vaša implementacija
+    dimension= slika.shape
+    r1o=slika.copy()
+    r2o=slika.copy()
+    print("slika 6 6: ",slika[6,6],"slika 7 7: ",slika[6,6])
     r1 = np.array([[1,0],[0,-1]])
     r2 = np.array([[0,1],[-1,0]])
+    rto = cv2.filter2D(slika,-1,r2)
+    for i in range(0,dimension[0]-1):
+       for j in range(0,dimension[1]-1):
+         pixel1=slika[j][i]-slika[j+1][i+1]
+         pixel2=slika[j][i+1]-slika[j+1][i]
+         if(slika[j][i]<=slika[j+1][i+1]):
+             pixel1=0
+         if(slika[j][i+1]<=slika[j+1][i]):
+             pixel2=0
+         r1o[j][i]=pixel1
+         r2o[j][i]=pixel2
 
-
-    r1o = cv2.filter2D(slika,-1,r1)   
+         
+    print("shit 6 6: ",r1o[6,6])
+    print("rto 0 0: ",rto[6,6])
     r2o = cv2.filter2D(slika,-1,r2)
-
     roberts_odvoda = cv2.hconcat((r1o,r2o))
 
 #roberts_amplituda = np.sqrt(r1o**2 + r2o**2)
@@ -28,8 +43,6 @@ def my_roberts(slika):
 
 def my_prewitt(slika):
     r1 = np.array([[1,0, -1],[1, 0,-1], [1,0,-1]])
-
-
     r2 = np.array([[1,1,1],[0,0,0], [-1,-1,-1]])
     p1o = cv2.filter2D(slika,-1,r1)
     p2o = cv2.filter2D(slika,-1,r2)
@@ -62,10 +75,10 @@ def canny(slika, sp_prag, zg_prag):
 
 
 img = cv2.imread("lenna.png",0)
-#cv2.imshow("roberts algoritem",my_roberts(img))
+cv2.imshow("roberts algoritem",my_roberts(img))
 #cv2.imshow("prewwit algoritem",my_prewitt(img))
 #cv2.imshow("sobel algoritem",my_sobel(img))
-cv2.imshow("canny algoritem (10,300)",canny(img,10,300))
-cv2.imshow("canny algoritem (50,150)",canny(img,50,150))
+#cv2.imshow("canny algoritem (10,300)",canny(img,10,300))
+#cv2.imshow("canny algoritem (50,150)",canny(img,50,150))
 cv2.waitKey()
 cv2.destroyAllWindows()
